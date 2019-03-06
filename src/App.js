@@ -7,10 +7,9 @@ const HEARTH_PATH = new Path2D(HEART_SVG)
 const HEART_SCALE = 8
 
 function drawHeart(ctx, x, y, hsl) {
-  const offset = 200
   ctx.shadowColor = hsl
-  ctx.shadowBlur = 40
-  ctx.translate(x - offset, y - offset)
+  ctx.shadowBlur = 30
+  ctx.translate(x - 200, y - 500)
   ctx.fill(HEARTH_PATH)
 }
 
@@ -50,32 +49,32 @@ const App = () => {
   }, [points])
 
   function handleDraw(e) {
-    if (draw) {
-      let x, y, speed
-      const touches = e.targetTouches
-      if (touches) {
-        speed = touches[0].force * 20
-        x = touches[0].clientX
-        y = touches[0].clientY
-      } else {
-        x = e.clientX
-        y = e.clientY
-        const movX = e.movementX
-        const movY = e.movementY
-        speed = Math.sqrt(movX * movX + movY * movY)
-      }
-      addPoint([
-        ...points,
-        {
-          x,
-          y,
-          hsl: `hsl(${color}, ${Math.min(speed * 3 + 80, 120)}%, ${Math.min(
-            speed * 3 + 40,
-            200
-          )}%)`
-        }
-      ])
+    if (!draw) return
+
+    let x, y, speed
+    const touches = e.targetTouches
+    if (touches) {
+      speed = touches[0].force * 20
+      x = touches[0].clientX
+      y = touches[0].clientY
+    } else {
+      x = e.clientX
+      y = e.clientY
+      const movX = e.movementX
+      const movY = e.movementY
+      speed = Math.sqrt(movX * movX + movY * movY)
     }
+    addPoint([
+      ...points,
+      {
+        x,
+        y,
+        hsl: `hsl(${color}, ${Math.min(speed * 3 + 80, 120)}%, ${Math.min(
+          speed * 3 + 40,
+          200
+        )}%)`
+      }
+    ])
   }
 
   const dw = Math.floor(pixelRatio * width)
